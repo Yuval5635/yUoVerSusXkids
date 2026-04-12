@@ -1,3 +1,4 @@
+import random as rd
 import pygame
 import Utils.PygameUtils as pgUtils
 import Constants as Const
@@ -6,65 +7,79 @@ import Utils.Vector as Vector
 class Player:
 
     def punch(self, enemies):
-        if self.punch_cooldown <= 0 and self.stamina >= self.punch_cost:
-            self.punch_cooldown = (6 - 5 * (self.stamina / 100))
-            print("Player11: PUNCHING", self.punch_cooldown)
-            self.stamina -= self.punch_cost
-            print("Player13: ", self)
+        if self.stats["punch_cooldown"] <= 0 and self.stats["stamina"] >= self.less_stats["punch_cost"]:
+            self.stats["punch_cooldown"] = (6.0 - (5.0 * (self.stats["stamina"] / 100.0)))
+            print("Player11: punching")
+            self.stats["stamina"] -= self.less_stats["punch_cost"]
             for enemy in enemies:
-                print("Player15: ", enemy)
-                if (enemy.pos - self.pos).distance <= self.range and abs((enemy.pos - self.pos).angle - self.direction) <= self.range_angle:
-                    enemy.take_damage()
+                if (enemy.pos - self.pos).distance <= self.more_stats["range"] and abs((enemy.pos - self.pos).angle - self.stats["direction"]) <= self.more_stats["range_angle"]:
+                    enemy.take_damage(self.more_stats["damage"])
+                    print("Player16: ", max(enemy.stats["health"], 0))
 
     def __init__(self):
-        self.max_health = 10
-        self.health = self.max_health
-        self.stamina = 0
-        self.stamina_regeneration = 2 #stamina per second
-        self.punch_cost = 20 #stamina
-        self.health_regeneration = 0.1 #health per second when stamina is full
-        self.max_stamina = 20
+        self.stats = {
+            "stamina": 0,
+            "health": 0,  # same as max_health initially
+            "punch_cooldown": 0.0,  # seconds
+            "direction": 0
+        }
+        self.less_stats = {
+            "punch_cost": 20,  # stamina
+            "miss_chance": 50  # percentage
+        }
+        self.more_stats = {
+            "max_health": 10,
+            "stamina_regeneration": 2,  # stamina per second
+            "health_regeneration": 0.1,  # health per second when stamina is full
+            "max_stamina": 20,
+            "range": 20,  # pixels
+            "range_angle": 45,  # degrees
+            "max_speed": 20,  # pixels per second
+            "damage": 10,
+            "growth": 1  # percentage
+        }
+        self.stats["health"] = self.more_stats["max_health"]
         self.pos = Vector.Vector(Const.WINDOW_WIDTH / 3, Const.WINDOW_HEIGHT / 2) #pixels
-        self.range = 15 #pixels
-        self.range_angle = 45 #degrees
-        self.direction = 0
-        self.punch_cooldown = 0 #seconds
-        self.max_speed = 20 #pixel per second
-        self.miss_chance = 0 #precentage
 
     def take_damage(self, damage=5):
-        self.health -= damage
+        self.stats["health"] -= damage
 
     def move(self, enemies):
-        distance = (self.max_speed * self.stamina) / (self.max_stamina * Const.FPS)
+        distance = (self.more_stats["max_speed"] * self.stats["stamina"]) / (self.more_stats["max_stamina"] * Const.FPS)
         #movement = (D-A, S-W)
         movement = Vector.Vector(int(pgUtils.PygameUtils.is_key_held(pygame.K_d)) - int(pgUtils.PygameUtils.is_key_held(pygame.K_a)), int(pgUtils.PygameUtils.is_key_held(pygame.K_s)) - int(pgUtils.PygameUtils.is_key_held(pygame.K_w)))
         if bool(movement):
             movement.set_distance(distance)
-            self.direction = movement.angle
+            self.stats["direction"] = movement.angle
             self.pos += movement
         if pgUtils.PygameUtils.is_key_pressed(pygame.K_SPACE):
             self.punch(enemies)
 
     def update(self, enemies):
-        self.punch_cooldown -= 1/Const.FPS
-        self.stamina += self.stamina_regeneration/Const.FPS
-        if self.stamina > self.max_stamina:
-            self.stamina = self.max_stamina
-            self.health = min(self.health + self.health_regeneration/Const.FPS, self.max_health)
+        self.less_stats["punch_cooldown"] -= 1/Const.FPS
+        self.stats["stamina"] += self.more_stats["stamina_regeneration"]/Const.FPS
+        if self.stats["stamina"] > self.more_stats["max_stamina"]:
+            self.stats["stamina"] = self.more_stats["max_stamina"]
+            self.stats["health"] = min(self.stats["health"] + self.more_stats["health_regeneration"]/Const.FPS, self.more_stats["max_health"])
         self.move(enemies)
 
+    def level_up(self):
+        for _ in range(5):
+            stat = rd.choice(list(self.more_stats.keys()))
+            self.more_stats[stat] += self.more_stats[stat] * (self.more_stats["growth"] / 100)
+
+
     def __str__(self):
-        name = "max health: " + str(self.max_health)
-        name += " health: " + str(self.health)
-        name += " stamina: " + str(self.stamina)
-        name += " stamina regeneration: " + str(self.stamina_regeneration)
-        name += " punch cost: " + str(self.punch_cost)
-        name += " health regeneration: " + str(self.health_regeneration)
-        name += " max stamina: " + str(self.max_stamina)
+        name = "max health: " + str(self.more_stats["max_health"])
+        name += " health: " + str(self.stats["health"])
+        name += " stamina: " + str(self.stats["stamina"])
+        name += " stamina regeneration: " + str(self.more_stats["stamina_regeneration"])
+        name += " punch cost: " + str(self.less_stats["punch_cost"])
+        name += " health regeneration: " + str(self.more_stats["health_regeneration"])
+        name += " max stamina: " + str(self.more_stats["max_stamina"])
         name += " pos: " + str(self.pos)
-        name += " range: " + str(self.range)
-        name += " range angle: " + str(self.range_angle)
-        name += " direction: " + str(self.direction)
-        name += " punch cooldown: " + str(self.punch_cooldown)
+        name += " range: " + str(self.more_stats["range"])
+        name += " range angle: " + str(self.more_stats["range_angle"])
+        name += " direction: " + str(self.stats["direction"])
+        name += " punch cooldown: " + str(self.less_stats["punch_cooldown"])
         return name

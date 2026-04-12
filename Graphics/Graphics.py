@@ -1,13 +1,14 @@
 import math
 import pygame as pg
-import Constants.Graphics as GraphicConst
+from Constants import Graphics as GraphicConst
 import Constants as Const
 
 class Graphics:
     def __init__(self):
+        pg.init()
+        font = pg.font.Font("Graphics/Fonts/PixelifySans-Regular.ttf", 40)
         self.win = pg.display.set_mode((Const.WINDOW_WIDTH, Const.WINDOW_HEIGHT))
         pg.display.set_caption("You VS x kids")
-        self.font = pg.font.Font("Fonts/PixelifySans-Regular.ttf", 40)
 
     def draw_sector(self, color, center, radius, start_angle, end_angle):
         temp = pg.Surface((radius * 2, radius * 2), pg.SRCALPHA)

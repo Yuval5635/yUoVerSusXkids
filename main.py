@@ -25,7 +25,7 @@ while run:
     if game.is_enemies_dead():
         game.set_level(game.level + 1)
         game.start_level()
-        print("main27: level up to: ", game.level)
+        print("main28: level up to: ", game.level)
 
     pgUtils.PygameUtils.update()
     game.update()
