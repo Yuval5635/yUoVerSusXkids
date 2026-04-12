@@ -6,6 +6,7 @@ class EntityContainer:
         self.player = Player.Player()
         self.level = 1
         self.enemies = []
+        self.is_player_alive = True
 
     def start_level(self):
         self.enemies = []
@@ -24,6 +25,8 @@ class EntityContainer:
                 self.enemies.remove(enemy)
             else:
                 enemy.update(self.player)
+
+        self.is_player_alive = self.player.health > 0
 
     def is_enemies_dead(self):
         if len(self.enemies) == 0:

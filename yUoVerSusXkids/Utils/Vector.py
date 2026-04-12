@@ -25,10 +25,15 @@ class Vector:
     def __bool__(self):
         return bool(self.distance)
 
-    def rotate(self, angle):
+    def rotate_by(self, angle):
         self.angle += angle
-        self.x += self.distance * math.cos(angle)
-        self.y += self.distance * math.sin(angle)
+        self.x = self.distance * math.cos(angle)
+        self.y = self.distance * math.sin(angle)
+
+    def rotate_to(self, angle):
+        self.angle = angle
+        self.x = self.distance * math.cos(angle)
+        self.y = self.distance * math.sin(angle)
 
     def set_distance(self, length):
         self.distance = length

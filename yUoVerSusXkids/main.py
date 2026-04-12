@@ -13,6 +13,8 @@ game.start_level()
 last_time = time.time()
 run = True
 while run:
+    run = game.is_player_alive
+    print(run)
     time.sleep(max(0.0, last_time - time.time() + 1/Const.FPS))
     last_time = time.time()
     for event in pg.event.get():
