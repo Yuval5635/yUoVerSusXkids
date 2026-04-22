@@ -1,3 +1,5 @@
+import pygame
+
 import Graphics.Graphics as Graphics
 win = Graphics.Graphics()
 
@@ -28,6 +30,9 @@ while run:
             game.set_level(game.level + 1)
             game.start_level()
             print('main28: level up to: ', game.level)
+
+    if pgUtils.PygameUtils.is_key_pressed(pygame.K_SPACE):
+        isPaused = not isPaused
 
     pgUtils.PygameUtils.update()
     game.update()
