@@ -7,7 +7,7 @@ class EntityContainer:
         self.level = 1
         self.enemies = []
         self.is_player_alive = True
-
+#try to commit
     def start_level(self):
         self.enemies = []
         for i in range(self.level):
