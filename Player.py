@@ -9,12 +9,12 @@ class Player:
     def punch(self, enemies):
         if self.stats["punch_cooldown"] <= 0 and self.stats["stamina"] >= self.less_stats["punch_cost"]:
             self.stats["punch_cooldown"] = (6.0 - (5.0 * (self.stats["stamina"] / 100.0)))
-            print("Player11: punching")
+            #print("Player12: punching")
             self.stats["stamina"] -= self.less_stats["punch_cost"]
             for enemy in enemies:
                 if (enemy.pos - self.pos).distance <= self.more_stats["range"] and abs((enemy.pos - self.pos).angle - self.stats["direction"]) <= self.more_stats["range_angle"]:
                     enemy.take_damage(self.more_stats["damage"])
-                    print("Player16: ", max(enemy.stats["health"], 0))
+                    #print(Player17: , max(enemy.stats["health"], 0))
 
     def __init__(self):
         self.stats = {
@@ -78,7 +78,7 @@ class Player:
                 keys = list(self.more_stats.keys())
                 stat = rd.choice(keys)
                 self.level[stat] += 1
-                self.more_stats[stat] -= self.more_stats[stat] * (self.more_stats["growth"] / 100)
+                self.more_stats[stat] += self.more_stats[stat] * (self.more_stats["growth"] / 100)
 
     def __str__(self):
         name = "max health: " + str(self.more_stats["max_health"])
@@ -98,5 +98,13 @@ class Player:
     def level_up(self, other):
         max_key = "punch_cost"
         for key in self.level:
-            if self.level[key] > self.level[max_key]:
+            if other.level[key] > other.level[max_key]:
                 max_key = key
+        self.level[max_key] += 1
+        if max_key in self.less_stats:
+            self.less_stats[max_key] -= self.less_stats[max_key] * (self.more_stats["growth"] / 100)
+        else:
+            self.more_stats[max_key] += self.more_stats[max_key] * (self.more_stats["growth"] / 100)
+        #print("Player108: " + str(self.level))
+        #print("Player109: " + str(self.less_stats | self.more_stats))
+        #print("Player110: " + str(other.level))
