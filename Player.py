@@ -13,8 +13,9 @@ class Player:
             self.stats["stamina"] -= self.less_stats["punch_cost"]
             for enemy in enemies:
                 if (enemy.pos - self.pos).distance <= self.more_stats["range"] and abs((enemy.pos - self.pos).angle - self.stats["direction"]) <= self.more_stats["range_angle"]:
-                    enemy.take_damage(self.more_stats["damage"])
-                    #print(Player17: , max(enemy.stats["health"], 0))
+                    if rd.random() > (self.less_stats["miss_chance"] / 100.0):
+                        enemy.take_damage(self.more_stats["damage"])
+                        #print(Player17: , max(enemy.stats["health"], 0))
 
     def __init__(self):
         self.stats = {
