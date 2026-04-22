@@ -60,7 +60,7 @@ class Player:
             self.punch(enemies)
 
     def update(self, enemies):
-        self.less_stats["punch_cooldown"] -= 1/Const.FPS
+        self.stats["punch_cooldown"] -= 1/Const.FPS
         self.stats["stamina"] += self.more_stats["stamina_regeneration"]/Const.FPS
         if self.stats["stamina"] > self.more_stats["max_stamina"]:
             self.stats["stamina"] = self.more_stats["max_stamina"]
@@ -92,11 +92,11 @@ class Player:
         name += " range: " + str(self.more_stats["range"])
         name += " range angle: " + str(self.more_stats["range_angle"])
         name += " direction: " + str(self.stats["direction"])
-        name += " punch cooldown: " + str(self.less_stats["punch_cooldown"])
+        name += " punch cooldown: " + str(self.stats["punch_cooldown"])
         return name
 
     def level_up(self, other):
-        max_key = ""
+        max_key = "punch_cost"
         for key in self.level:
             if self.level[key] > self.level[max_key]:
                 max_key = key
