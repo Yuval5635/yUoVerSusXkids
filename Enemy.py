@@ -14,10 +14,7 @@ class Enemy(Player.Player):
         self.more_stats["damage"] = 5
         self.budget = 15
 
-        keys = list(self.more_stats.keys())
-        for _ in range(self.budget):
-            stat = random.choice(keys)
-            self.more_stats[stat] += self.more_stats[stat] * (self.more_stats["growth"] / 100)
+        self.randomize_stats()
 
         print("Enemy22: ", self.more_stats)
 

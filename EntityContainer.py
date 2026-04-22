@@ -21,13 +21,13 @@ class EntityContainer:
 
         for enemy in self.enemies:
             if enemy.changeable_stats["health"] <= 0:
+                self.player.level_up(enemy)
                 self.enemies.remove(enemy)
-                self.player.level_up()
                 print("EntityContainer26: ", str(self.player))
             else:
                 enemy.update(self.player)
 
-        self.is_player_alive = self.player.changeable_stats["health"] > 0
+        self.is_player_alive = self.player.stats["health"] > 0
 
     def is_enemies_dead(self):
         if len(self.enemies) == 0:

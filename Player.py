@@ -38,8 +38,12 @@ class Player:
             "damage": 10,
             "growth": 1  # percentage
         }
+        self.level = self.less_stats | self.more_stats
+        for key in self.level:
+            self.level[key] = 0
         self.stats["health"] = self.more_stats["max_health"]
         self.pos = Vector.Vector(Const.WINDOW_WIDTH / 3, Const.WINDOW_HEIGHT / 2) #pixels
+        self.budget = 0
 
     def take_damage(self, damage=5):
         self.stats["health"] -= damage
@@ -63,11 +67,18 @@ class Player:
             self.stats["health"] = min(self.stats["health"] + self.more_stats["health_regeneration"]/Const.FPS, self.more_stats["max_health"])
         self.move(enemies)
 
-    def level_up(self):
-        for _ in range(5):
-            stat = rd.choice(list(self.more_stats.keys()))
-            self.more_stats[stat] += self.more_stats[stat] * (self.more_stats["growth"] / 100)
-
+    def randomize_stats(self):
+        for _ in range(self.budget):
+            if rd.randint(0, len(self.less_stats) + len(self.more_stats)) < len(self.less_stats):
+                keys = list(self.less_stats.keys())
+                stat = rd.choice(keys)
+                self.level[stat] += 1
+                self.less_stats[stat] -= self.less_stats[stat] * (self.more_stats["growth"] / 100)
+            else:
+                keys = list(self.more_stats.keys())
+                stat = rd.choice(keys)
+                self.level[stat] += 1
+                self.more_stats[stat] -= self.more_stats[stat] * (self.more_stats["growth"] / 100)
 
     def __str__(self):
         name = "max health: " + str(self.more_stats["max_health"])
@@ -83,3 +94,9 @@ class Player:
         name += " direction: " + str(self.stats["direction"])
         name += " punch cooldown: " + str(self.less_stats["punch_cooldown"])
         return name
+
+    def level_up(self, other):
+        max_key = ""
+        for key in self.level:
+            if self.level[key] > self.level[max_key]:
+                max_key = key
