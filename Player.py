@@ -60,7 +60,7 @@ class Player:
             self.punch(enemies)
 
     def update(self, enemies):
-        self.less_stats["punch_cooldown"] -= 1/Const.FPS
+        self.stats["punch_cooldown"] -= 1/Const.FPS
         self.stats["stamina"] += self.more_stats["stamina_regeneration"]/Const.FPS
         if self.stats["stamina"] > self.more_stats["max_stamina"]:
             self.stats["stamina"] = self.more_stats["max_stamina"]
