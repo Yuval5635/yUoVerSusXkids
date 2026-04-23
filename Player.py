@@ -54,8 +54,11 @@ class Player:
         movement = Vector.Vector(int(pgUtils.PygameUtils.is_key_held(pygame.K_d)) - int(pgUtils.PygameUtils.is_key_held(pygame.K_a)), int(pgUtils.PygameUtils.is_key_held(pygame.K_s)) - int(pgUtils.PygameUtils.is_key_held(pygame.K_w)))
         if bool(movement):
             movement.set_distance(distance)
-            self.stats["direction"] = movement.angle
+            self.stats[\"direction\"] = movement.angle
             self.pos += movement
+        # Boundary check
+        self.pos.x = max(0, min(self.pos.x, Const.WINDOW_WIDTH))
+        self.pos.y = max(0, min(self.pos.y, Const.WINDOW_HEIGHT))
         if pgUtils.PygameUtils.is_key_pressed(pygame.K_SPACE):
             self.punch(enemies)
 
