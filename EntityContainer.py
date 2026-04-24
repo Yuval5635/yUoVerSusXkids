@@ -17,8 +17,10 @@ class EntityContainer:
         self.level = level
 
     def update(self):
+        #Player
         self.player.update(self.enemies)
 
+        #Enemies
         for enemy in self.enemies:
             if enemy.stats["health"] <= 0:
                 self.player.level_up(enemy)

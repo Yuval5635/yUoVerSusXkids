@@ -106,6 +106,3 @@ class Player:
             self.less_stats[max_key] -= self.less_stats[max_key] * (self.more_stats["growth"] / 100)
         else:
             self.more_stats[max_key] += self.more_stats[max_key] * (self.more_stats["growth"] / 100)
-        #print("Player108: " + str(self.level))
-        #print("Player109: " + str(self.less_stats | self.more_stats))
-        #print("Player110: " + str(other.level))

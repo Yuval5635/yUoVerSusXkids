@@ -1,6 +1,8 @@
 import pygame
 
 import Graphics.Graphics as Graphics
+from Utils.UtilsManager import Utils
+
 win = Graphics.Graphics()
 
 print(win)
@@ -34,6 +36,6 @@ while run:
     if pgUtils.PygameUtils.is_key_pressed(pygame.K_SPACE):
         isPaused = not isPaused
 
-    pgUtils.PygameUtils.update()
+    Utils.update()
     game.update()
     win.update_window(game)
