@@ -30,6 +30,7 @@ class Graphics:
         self.update()
 
     def update_game_over(self):
+        self.win.fill(GraphicConst.BACKGROUND_COLOR)
         self.update()
 
     def update_pause(self):

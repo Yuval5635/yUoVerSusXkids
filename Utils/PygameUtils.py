@@ -36,6 +36,4 @@ class PygameUtils:
 
     @staticmethod
     def is_mouse_pressed(button): #0 - Left, 1 - Middle, 2 - Right
-        print(PygameUtils.mouse_old_buttons)
-        print(PygameUtils.mouse_buttons)
         return PygameUtils.mouse_buttons[button] and not PygameUtils.mouse_old_buttons[button]

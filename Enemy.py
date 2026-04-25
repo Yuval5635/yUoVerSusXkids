@@ -26,7 +26,7 @@ class Enemy(Player.Player):
             self.stats["punch_cooldown"] = (6 - 5 * (self.stats["stamina"] / 100))
             self.stats["stamina"] -= self.less_stats["punch_cost"]
             player.take_damage(self.more_stats["damage"])
-            #print("Enemy32:  Punching", player.stats["health"])
+            print("Enemy32:  Punching", player.stats["health"])
 
     def update(self, player):
         self.stats["punch_cooldown"] -= 1/Const.FPS
