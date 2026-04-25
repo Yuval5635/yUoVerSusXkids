@@ -11,6 +11,10 @@ class Graphics:
         self.win = pg.display.set_mode((Const.WINDOW_WIDTH, Const.WINDOW_HEIGHT))
         pg.display.set_caption("You VS x kids")
 
+    def update(self):
+        Utils.draw(self.win)
+        pg.display.update()
+
     def update_game(self, game): #EntityContainer
         self.win.fill(GraphicConst.BACKGROUND_COLOR)
 
@@ -19,15 +23,14 @@ class Graphics:
         for enemy in game.enemies:
             pg.draw.rect(self.win, (255, 0, 0), pg.Rect(enemy.pos.x - (GraphicConst.ENEMY_WIDTH // 2), enemy.pos.y - (GraphicConst.ENEMY_HEIGHT // 2), GraphicConst.ENEMY_WIDTH, GraphicConst.ENEMY_HEIGHT))
 
-        Utils.draw(self.win)
-
-        pg.display.update()
+        self.update()
 
     def update_starting_game(self):
         self.win.fill(GraphicConst.BACKGROUND_COLOR)
+        self.update()
 
     def update_game_over(self):
-        pass
+        self.update()
 
     def update_pause(self):
-        pass
+        self.update()

@@ -13,14 +13,16 @@ class SquareButton(Button):
 
     @staticmethod
     def draw(window):
+        buttons = Button.get_buttons()
         for button in Button.get_buttons():
-            if button.is_pressed:
-                color = button.press_color
-            elif button.is_hover:
-                color = button.hover_color
-            else:
-                color = button.color
-            pg.draw.rect(window, color, pg.Rect(button.pos.x, button.pos.y, button.width, button.height), border_radius=button.radius)
+            if isinstance(buttons[button], SquareButton):
+                if buttons[button].is_pressed:
+                    color = buttons[button].press_color
+                elif buttons[button].is_hover:
+                    color = buttons[button].hover_color
+                else:
+                    color = buttons[button].color
+                pg.draw.rect(window, color, pg.Rect(buttons[button].pos.x, buttons[button].pos.y, buttons[button].width, buttons[button].height), border_radius=buttons[button].radius)
 
     @staticmethod
     def update():

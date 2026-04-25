@@ -35,17 +35,23 @@ class ScreenManager:
             if Button.get_buttons()["Starting Button"].is_pressed:
                 self.current_screen = Constants.ScreenState.GAME
 
-        if self.current_screen == Constants.ScreenState.GAME:
+        elif self.current_screen == Constants.ScreenState.GAME:
             if pgUtils.PygameUtils.is_key_pressed(pg.K_ESCAPE):
                 self.current_screen = Constants.ScreenState.PAUSE
 
+        elif self.current_screen == Constants.ScreenState.PAUSE:
+            if pgUtils.PygameUtils.is_key_pressed(pg.K_ESCAPE):
+                self.current_screen = Constants.ScreenState.GAME
+
         #one time generating in screen state
         if self.current_screen != self.last_screen:
+            print(self.current_screen)
             if self.last_screen == Constants.ScreenState.START:
                 if self.current_screen == Constants.ScreenState.GAME:
                     self.game.start_level()
+                    Button.remove_button(Button.get_buttons()["Starting Button"])
 
-            if self.last_screen == Constants.ScreenState.GAME_OVER:
+            elif self.last_screen == Constants.ScreenState.GAME_OVER:
                 if self.current_screen == Constants.ScreenState.START:
                     SquareButton("Starting Button", Vector(Constants.WINDOW_WIDTH / 2, Constants.WINDOW_HEIGHT * 0.75), 200, 30, (0, 0, 0))
 

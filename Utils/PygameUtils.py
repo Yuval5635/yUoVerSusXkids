@@ -15,7 +15,7 @@ class PygameUtils:
         PygameUtils.keys = pg.key.get_pressed()
         PygameUtils.events = pg.event.get()
         PygameUtils.mouse_position = Vector(pg.mouse.get_pos()[0], pg.mouse.get_pos()[1])
-        PygameUtils.mouse_old_buttons_buttons = PygameUtils.mouse_buttons
+        PygameUtils.mouse_old_buttons = PygameUtils.mouse_buttons
         PygameUtils.mouse_buttons = pg.mouse.get_pressed()
 
     @staticmethod
@@ -36,4 +36,6 @@ class PygameUtils:
 
     @staticmethod
     def is_mouse_pressed(button): #0 - Left, 1 - Middle, 2 - Right
+        print(PygameUtils.mouse_old_buttons)
+        print(PygameUtils.mouse_buttons)
         return PygameUtils.mouse_buttons[button] and not PygameUtils.mouse_old_buttons[button]
