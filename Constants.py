@@ -1,3 +1,5 @@
+import pygame
+
 FPS = 60
 WINDOW_WIDTH = 700
 WINDOW_HEIGHT = 300
@@ -9,3 +11,9 @@ class Graphics:
     ENEMY_WIDTH = 10
     ENEMY_HEIGHT = 20
     ENEMY_COLOR = (255, 0, 0)
+
+class ScreenState:
+    START = "start"
+    GAME = "game"
+    GAME_OVER = "game over"
+    PAUSE = "pause"

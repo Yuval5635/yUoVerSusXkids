@@ -1,41 +1,15 @@
-import pygame
-
-import Graphics.Graphics as Graphics
-from Utils.UtilsManager import Utils
-
-win = Graphics.Graphics()
-
-print(win)
-import EntityContainer
 import pygame as pg
 import time
 import Constants as Const
-import Utils.PygameUtils as pgUtils
+import ScreenManager
 
-game = EntityContainer.EntityContainer()
-game.start_level()
 last_time = time.time()
+screen = ScreenManager.ScreenManager()
 run = True
-isPaused = False
 while run:
-    if not isPaused:
-        run = game.is_player_alive
-        time.sleep(max(0.0, last_time - time.time() + 1/Const.FPS))
-        last_time = time.time()
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                run = False
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_ESCAPE:
-                    run = False
-        if game.is_enemies_dead():
-            game.set_level(game.level + 1)
-            game.start_level()
-            print('main28: level up to: ', game.level)
-
-    if pgUtils.PygameUtils.is_key_pressed(pygame.K_SPACE):
-        isPaused = not isPaused
-
-    Utils.update()
-    game.update()
-    win.update_window(game)
+    time.sleep(max(0.0, last_time - time.time() + 1/Const.FPS))
+    last_time = time.time()
+    screen.update()
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            run = False

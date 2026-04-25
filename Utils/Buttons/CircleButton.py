@@ -23,12 +23,14 @@ class CircleButton(Button):
     @staticmethod
     def update():
         mouse = PygameUtils.get_mouse_position()
+        buttons = Button.get_buttons()
         for button in Button.get_buttons():
-            if mouse - button.pos < button.radius:
-                button.is_hover = True
-                if PygameUtils.is_mouse_pressed(0):
-                    button.is_pressed = True
+            if isinstance(buttons[button], CircleButton):
+                if mouse - buttons[button].pos < buttons[button].radius:
+                    buttons[button].is_hover = True
+                    if PygameUtils.is_mouse_pressed(0):
+                        buttons[button].is_pressed = True
+                    else:
+                        buttons[button].is_pressed = False
                 else:
-                    button.is_pressed = False
-            else:
-                button.is_pressed = False
+                    buttons[button].is_pressed = False

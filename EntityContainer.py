@@ -31,6 +31,11 @@ class EntityContainer:
 
         self.is_player_alive = self.player.stats["health"] > 0
 
+        if self.is_enemies_dead():
+            self.set_level(self.level + 1)
+            self.start_level()
+            print('EntityContainer37: level up to: ', self.level)
+
     def is_enemies_dead(self):
         if len(self.enemies) == 0:
             return True

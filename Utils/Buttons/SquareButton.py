@@ -25,12 +25,14 @@ class SquareButton(Button):
     @staticmethod
     def update():
         mouse = PygameUtils.get_mouse_position()
-        for button in Button.get_buttons():
-            if (button.x < mouse.x < button.x + button.width) and (button.y < mouse.y < button.y + button.height):
-                button.is_hover = True
-                if PygameUtils.is_mouse_pressed(0):
-                    button.is_pressed = True
+        buttons = Button.get_buttons()
+        for button in buttons:
+            if isinstance(buttons[button], SquareButton):
+                if (buttons[button].pos.x < mouse.x < buttons[button].pos.x + buttons[button].width) and (buttons[button].pos.y < mouse.y < buttons[button].pos.y + buttons[button].height):
+                    buttons[button].is_hover = True
+                    if PygameUtils.is_mouse_pressed(0):
+                        buttons[button].is_pressed = True
+                    else:
+                        buttons[button].is_pressed = False
                 else:
-                    button.is_pressed = False
-            else:
-                button.is_hover = False
+                    buttons[button].is_hover = False
