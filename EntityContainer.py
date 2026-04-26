@@ -7,6 +7,11 @@ class EntityContainer:
         self.level = 1
         self.enemies = []
         self.is_player_alive = True
+
+    def reset(self):
+        self.player.reset()
+        self.level = 1
+        self.start_level()
         
     def start_level(self):
         self.enemies = []

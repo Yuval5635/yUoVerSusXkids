@@ -5,11 +5,12 @@ from Utils.PygameUtils import PygameUtils
 
 
 class SquareButton(Button):
-    def __init__(self, name, pos, width, height, color, hover_color=None, press_color=None, radius=0):
+    def __init__(self, name, pos, width, height, color, hover_color=None, press_color=None, radius=0, image=None):
         super().__init__(name, pos, color, hover_color, press_color)
         self.width = width
         self.height = height
         self.radius = radius
+        self.image = image
 
     @staticmethod
     def draw(window):
@@ -23,6 +24,9 @@ class SquareButton(Button):
                 else:
                     color = buttons[button].color
                 pg.draw.rect(window, color, pg.Rect(buttons[button].pos.x, buttons[button].pos.y, buttons[button].width, buttons[button].height), border_radius=buttons[button].radius)
+                if buttons[button].image:
+                    window.bilt(buttons[button].image, buttons[button].pos)
+
 
     @staticmethod
     def update():

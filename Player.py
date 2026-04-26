@@ -6,6 +6,35 @@ import Utils.Vector as Vector
 
 class Player:
 
+    def reset(self):
+        self.stats = {
+            "stamina": 0,
+            "health": 0,  # same as max_health initially
+            "punch_cooldown": 0.0,  # seconds
+            "direction": 0
+        }
+        self.less_stats = {
+            "punch_cost": 20,  # stamina
+            "miss_chance": 50  # percentage
+        }
+        self.more_stats = {
+            "max_health": 10,
+            "stamina_regeneration": 2,  # stamina per second
+            "health_regeneration": 0.1,  # health per second when stamina is full
+            "max_stamina": 20,
+            "range": 20,  # pixels
+            "range_angle": 45,  # degrees
+            "max_speed": 20,  # pixels per second
+            "damage": 10,
+            "growth": 1  # percentage
+        }
+        self.level = self.less_stats | self.more_stats
+        for key in self.level:
+            self.level[key] = 0
+        self.stats["health"] = self.more_stats["max_health"]
+        self.pos = Vector.Vector(Const.WINDOW_WIDTH / 3, Const.WINDOW_HEIGHT / 2)  # pixels
+        self.budget = 0
+
     def punch(self, enemies):
         if self.stats["punch_cooldown"] <= 0 and self.stats["stamina"] >= self.less_stats["punch_cost"]:
             self.stats["punch_cooldown"] = (6.0 - (5.0 * (self.stats["stamina"] / 100.0)))

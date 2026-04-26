@@ -62,7 +62,7 @@ class ScreenManager:
             if self.last_screen == Constants.ScreenState.START:
                 Button.remove_button(Button.get_buttons()["Starting Button"])
                 if self.current_screen == Constants.ScreenState.GAME:
-                    self.game.start_level()
+                    self.game.reset()
 
             elif self.last_screen == Constants.ScreenState.GAME:
                 if self.current_screen == Constants.ScreenState.GAME_OVER:
