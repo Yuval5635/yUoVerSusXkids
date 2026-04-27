@@ -16,7 +16,7 @@ class EntityContainer:
     def start_level(self):
         self.enemies = []
         for i in range(self.level):
-            self.enemies.append(Enemy.Enemy())
+            self.enemies.append(Enemy.Enemy(self.player))
 
     def set_level(self, level):
         self.level = level

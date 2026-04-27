@@ -1,14 +1,14 @@
 import Player
-import random
+import random as rd
 import Utils.Vector as Vector
 import Constants as Const
 
 
 class Enemy(Player.Player):
 
-    def __init__(self):
+    def __init__(self, player):
         super().__init__()
-        self.pos = Vector.Vector(500, random.randint(50, 250))
+        self.pos = self.spawn(player)
         self.more_stats["max_speed"] = 10
         self.more_stats["range"] = 10
         self.more_stats["damage"] = 5
@@ -17,6 +17,12 @@ class Enemy(Player.Player):
         self.randomize_stats()
 
         #print(Enemy22: ", self.more_stats)
+    @staticmethod
+    def spawn(player):
+        pos = Vector.Vector(rd.randint(0, Const.WINDOW_WIDTH), rd.randint(0, Const.WINDOW_HEIGHT))
+        while (pos - player.pos).distance < 50:
+            pos = Vector.Vector(Const.WINDOW_WIDTH, Const.WINDOW_HEIGHT)
+        return pos
 
     def take_damage(self, damage=10):
         self.stats["health"] -= damage
