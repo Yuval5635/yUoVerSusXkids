@@ -1,5 +1,5 @@
 import random as rd
-import pygame
+import pygame as pg
 import Utils.PygameUtils as pgUtils
 import Constants as Const
 import Utils.Vector as Vector
@@ -74,6 +74,8 @@ class Player:
         self.stats["health"] = self.more_stats["max_health"]
         self.pos = Vector.Vector(Const.WINDOW_WIDTH / 3, Const.WINDOW_HEIGHT / 2) #pixels
         self.budget = 0
+        self.stats_name = list((self.more_stats | self.less_stats).keys())
+        self.current_stat_index = 0
 
     def take_damage(self, damage=5):
         self.stats["health"] -= damage
@@ -81,12 +83,12 @@ class Player:
     def move(self, enemies):
         distance = (self.more_stats["max_speed"] * self.stats["stamina"]) / (self.more_stats["max_stamina"] * Const.FPS)
         #movement = (D-A, S-W)
-        movement = Vector.Vector(int(pgUtils.PygameUtils.is_key_held(pygame.K_d)) - int(pgUtils.PygameUtils.is_key_held(pygame.K_a)), int(pgUtils.PygameUtils.is_key_held(pygame.K_s)) - int(pgUtils.PygameUtils.is_key_held(pygame.K_w)))
+        movement = Vector.Vector(int(pgUtils.PygameUtils.is_key_held(pg.K_d)) - int(pgUtils.PygameUtils.is_key_held(pg.K_a)), int(pgUtils.PygameUtils.is_key_held(pg.K_s)) - int(pgUtils.PygameUtils.is_key_held(pg.K_w)))
         if bool(movement):
             movement.set_distance(distance)
             self.stats["direction"] = movement.angle
             self.pos += movement
-        if pgUtils.PygameUtils.is_key_pressed(pygame.K_SPACE):
+        if pgUtils.PygameUtils.is_key_pressed(pg.K_SPACE):
             self.punch(enemies)
 
     def update(self, enemies):
@@ -96,6 +98,9 @@ class Player:
             self.stats["stamina"] = self.more_stats["max_stamina"]
             self.stats["health"] = min(self.stats["health"] + self.more_stats["health_regeneration"]/Const.FPS, self.more_stats["max_health"])
         self.move(enemies)
+        self.add_point()
+        if pgUtils.PygameUtils.is_key_pressed(pg.K_e):
+            self.current_stat_index = (self.current_stat_index + 1) % len(self.stats_name)
 
     def randomize_stats(self):
         for _ in range(self.budget):
@@ -125,13 +130,13 @@ class Player:
         name += " punch cooldown: " + str(self.stats["punch_cooldown"])
         return name
 
-    def level_up(self, other):
-        max_key = "punch_cost"
-        for key in self.level:
-            if other.level[key] > other.level[max_key]:
-                max_key = key
-        self.level[max_key] += 1
-        if max_key in self.less_stats:
-            self.less_stats[max_key] -= self.less_stats[max_key] * (self.more_stats["growth"] / 100)
-        else:
-            self.more_stats[max_key] += self.more_stats[max_key] * (self.more_stats["growth"] / 100)
+    def level_up(self):
+        self.budget += 1
+
+    def add_point(self):
+        if pgUtils.PygameUtils.is_key_pressed(pg.K_q):
+            self.level[self.stats_name[self.current_stat_index]] += 1
+            if self.stats_name[self.current_stat_index] in self.less_stats:
+                self.less_stats[self.stats_name[self.current_stat_index]] -= self.less_stats[self.stats_name[self.current_stat_index]] * (self.more_stats["growth"] / 100)
+            else:
+                self.more_stats[self.stats_name[self.current_stat_index]] += self.more_stats[self.stats_name[self.current_stat_index]] * (self.more_stats["growth"] / 100)
