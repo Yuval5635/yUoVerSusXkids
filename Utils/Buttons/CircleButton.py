@@ -5,9 +5,10 @@ from Utils.PygameUtils import PygameUtils
 
 
 class CircleButton(Button):
-    def __init__(self, name, pos, radius, color, hover_color=None, press_color=None):
+    def __init__(self, name, pos, radius, color, hover_color=None, press_color=None, image=None):
         super().__init__(name, pos, color, hover_color, press_color)
         self.radius = radius
+        self.image = image
 
     @staticmethod
     def draw(window):
@@ -21,6 +22,8 @@ class CircleButton(Button):
                 else:
                     color = buttons[button].color
                 pg.draw.circle(window, color, (buttons[button].pos.x, buttons[button].pos.y), buttons[button].radius)
+                if buttons[button].image:
+                    window.bilt(buttons[button].image, buttons[button].pos)
 
     @staticmethod
     def update():
