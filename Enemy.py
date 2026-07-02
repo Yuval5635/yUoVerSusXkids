@@ -22,8 +22,8 @@ class Enemy(Player.Player):
         self.stats["health"] -= damage
 
     def punch(self, player):
-        if self.less_stats["punch_cooldown"] <= 0 and self.stats["stamina"] >= self.less_stats["punch_cost"]:
-            self.less_stats["punch_cooldown"] = (6 - 5 * (self.stats["stamina"] / 100))
+        if self.stats["punch_cooldown"] <= 0 and self.stats["stamina"] >= self.less_stats["punch_cost"]:
+            self.stats["punch_cooldown"] = (6 - 5 * (self.stats["stamina"] / 100))
             self.stats["stamina"] -= self.less_stats["punch_cost"]
             player.take_damage(self.more_stats["damage"])
             print("Enemy32:  Punching", player.stats["health"])

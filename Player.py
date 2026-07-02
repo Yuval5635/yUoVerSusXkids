@@ -94,9 +94,3 @@ class Player:
         name += " direction: " + str(self.stats["direction"])
         name += " punch cooldown: " + str(self.less_stats["punch_cooldown"])
         return name
-
-    def level_up(self, other):
-        max_key = ""
-        for key in self.level:
-            if self.level[key] > self.level[max_key]:
-                max_key = key
