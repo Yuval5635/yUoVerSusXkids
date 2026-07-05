@@ -1,10 +1,12 @@
 package entities;
 
 import java.util.ArrayList;
+import utils.Angle;
+import utils.Vector;
 
 public class BaseEntity {
 
-    private static ArrayList<BaseEntity> allEntities = new ArrayList<>();
+    private static final ArrayList<BaseEntity> allEntities = new ArrayList<>();
 
     protected double stamina;
     protected double staminaRegen;
@@ -23,12 +25,13 @@ public class BaseEntity {
 
     protected double speedMax;
 
+    protected Vector position;
+    protected Angle angle;
 
-    /*
-    * Base Constructor for entities.
-    * sets all values to 0. 
-    * Use the with methods to set values.
-    */
+    protected Vector size;
+
+
+
     protected BaseEntity() {
         this.stamina = 0;
         this.staminaRegen = 0;
@@ -43,12 +46,40 @@ public class BaseEntity {
         this.punchAngle = 0;
         this.punchMissChance = 0;
         this.speedMax = 0;
+        this.position = new Vector(0, 0);
+        this.angle = new Angle(0);
+        this.size = new Vector(0, 0);
 
-        allEntities.add(this);
+        addEntity();
     }
 
+    /**
+     * Get the list of all entities.
+     * @return ArrayList<BaseEntity> - the list of all entities
+     */
     public static ArrayList<BaseEntity> getAllEntities() {
         return allEntities;
+    }
+
+    /**
+     * Clear the list of all entities.
+     */
+    public static void clearAllEntities() {
+        allEntities.clear();
+    }
+
+    /**
+     * Remove this entity from the list of all entities.
+     */
+    public void removeEntity() {
+        allEntities.remove(this);
+    }
+
+    /**
+     * Add this entity to the list of all entities.
+     */
+    private void addEntity() {
+        allEntities.add(this);
     }
 
     
@@ -155,7 +186,37 @@ public class BaseEntity {
         return this;
     }
 
-    
+    /** 
+     * Set the position of the entity.
+     * @param position - the position of the entity
+     * @return BaseEntity - the entity itself
+     */
+    protected BaseEntity withPosition(Vector position) {
+        this.position = position;
+        return this;
+    }
+
+    /** 
+     * Set the angle of the entity.
+     * @param angle - the angle of the entity
+     * @return BaseEntity - the entity itself
+     */
+    protected BaseEntity withAngle(Angle angle) {
+        this.angle = angle;
+        return this;
+    }
+
+    /** 
+     * Set the size of the entity.
+     * @param size - the size of the entity
+     * @return BaseEntity - the entity itself
+     */
+    protected BaseEntity withSize(Vector size) {
+        this.size = size;
+        return this;
+    }
+
+
 
     //Getters for all the attributes
 
@@ -261,6 +322,30 @@ public class BaseEntity {
      */
     public double getSpeedMax() {
         return speedMax;
+    }
+
+    /** 
+     * Get the position of the entity.
+     * @return Vector - the position of the entity
+     */
+    public Vector getPosition() {
+        return position;
+    }
+
+    /** 
+     * Get the angle of the entity.
+     * @return Angle - the angle of the entity
+     */
+    public Angle getAngle() {
+        return angle;
+    }
+
+    /** 
+     * Get the size of the entity.
+     * @return Vector - the size of the entity
+     */
+    public Vector getSize() {
+        return size;
     }
 
 
@@ -371,6 +456,30 @@ public class BaseEntity {
         this.speedMax = speedMax;
     }
 
+    /** 
+     * Set the position of the entity.
+     * @param position - the position of the entity
+     */
+    public void setPosition(Vector position) {
+        this.position = position;
+    }
+
+    /** 
+     * Set the angle of the entity.
+     * @param angle - the angle of the entity
+     */
+    public void setAngle(Angle angle) {
+        this.angle = angle;
+    }
+
+    /** 
+     * Set the size of the entity.
+     * @param size - the size of the entity
+     */
+    public void setSize(Vector size) {
+        this.size = size;
+    }
+
     
 
     //Logic methods for the entity
@@ -389,6 +498,16 @@ public class BaseEntity {
      */
     public void addStamina(double stamina) {
         setStamina(getStamina() + stamina);
+    }
+
+    /**
+     * Move the entity by a certain angle.
+     * @param delta - the angle to move the entity by
+     */
+    public void move(double delta) {
+        if (getHealth() <= 0) return;
+
+        getPosition().add(new Vector(getDistance(delta), getAngle()));
     }
 
     /** 
@@ -413,9 +532,7 @@ public class BaseEntity {
      * @throws if the damage is negative 
      */
     public void takeDamage(double damage) {
-        if (getHealth() < 0) {
-            return;
-        }
+        if (getHealth() <= 0) return;
 
         setHealth(getHealth() - damage);
     }
@@ -442,5 +559,27 @@ public class BaseEntity {
         if (!isMaxStamina()) return;
 
         addHealth(getHealthRegen() * deltaTime);
+    }
+
+    /** 
+     * Get the distance the entity can move in a given time delta
+     * @param deltaTime - the time delta to calculate distance for
+     * @return double - the distance the entity can move in the given time delta
+     */
+    public double getDistance(double deltaTime) {
+        return (this.speedMax / deltaTime) * (this.stamina / this.staminaMax);
+    }
+
+    /**
+     * Return a string representation of the entity.
+     * @return String - the string representation of the entity
+     */
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + " [stamina=" + stamina + ", staminaRegen=" + staminaRegen + ", staminaMax=" + staminaMax
+                + ", health=" + health + ", healthRegen=" + healthRegen + ", healthMax=" + healthMax
+                + ", punchCooldown=" + punchCooldown + ", punchDamage=" + punchDamage + ", punchRange=" + punchRange
+                + ", punchStaminaCost=" + punchStaminaCost + ", punchAngle=" + punchAngle + ", punchMissChance="
+                + punchMissChance + ", speedMax=" + speedMax + ", position=" + position + ", size="  + size  + "]";
     }
 }
