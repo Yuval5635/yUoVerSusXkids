@@ -1,7 +1,7 @@
 import math
 import pygame as pg
-from Constants import Graphics as GraphicConst
-import Constants as Const
+from bad.Constants import Graphics as GraphicConst
+import bad.Constants as Const
 
 class Graphics:
     def __init__(self):

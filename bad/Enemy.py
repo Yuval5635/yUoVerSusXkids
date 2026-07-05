@@ -1,7 +1,7 @@
-import Player
+import bad.Player as Player
 import random
-import Utils.Vector as Vector
-import Constants as Const
+import bad.Utils.Vector as Vector
+import bad.Constants as Const
 
 
 class Enemy(Player.Player):

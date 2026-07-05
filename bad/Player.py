@@ -1,8 +1,8 @@
 import random as rd
 import pygame
-import Utils.PygameUtils as pgUtils
-import Constants as Const
-import Utils.Vector as Vector
+import bad.Utils.PygameUtils as pgUtils
+import bad.Constants as Const
+import bad.Utils.Vector as Vector
 
 class Player:
 

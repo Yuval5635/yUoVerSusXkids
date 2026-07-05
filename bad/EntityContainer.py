@@ -1,5 +1,5 @@
-import Player
-import Enemy
+import bad.Player as Player
+import bad.Enemy as Enemy
 
 class EntityContainer:
     def __init__(self):
