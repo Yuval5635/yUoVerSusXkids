@@ -1,4 +1,7 @@
 class Main {
+    public Main() {
+        
+    }
     public void update(){
 
     }
