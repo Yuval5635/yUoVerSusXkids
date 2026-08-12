@@ -38,6 +38,9 @@ class Enemy(Player.Player):
         movement = Vector.Vector.from_polar(min(self.more_stats["max_speed"], (player.pos - self.pos).distance) / Const.FPS, (player.pos - self.pos).angle)
         if bool(movement):
             self.pos = self.pos + movement
+        # Boundary check
+        self.pos.x = max(0, min(self.pos.x, Const.WINDOW_WIDTH))
+        self.pos.y = max(0, min(self.pos.y, Const.WINDOW_HEIGHT))
 
         if (player.pos - self.pos).distance <= self.more_stats["range"]:
             self.punch(player)
